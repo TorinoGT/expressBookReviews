@@ -4,53 +4,6 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-function getBooks() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() =>{
-      if(books) {
-        resolve(books);
-      } else {
-        reject('Failed to fetch books');
-      }
-    },3000)});
-}
-
-function getBookByISBN(isbn) {
-    return new Promise((resolve, reject) => {
-    setTimeout(() =>{
-      if (books[isbn]) {
-        resolve(books[isbn]);
-      } else {
-        reject('Book not found');
-      }
-    },3000)});
-}
-
-function getBooksByAuthor(author) {
-    return new Promise((resolve, reject) => {
-    setTimeout(() =>{
-      const booksByAuthor = Object.values(books).filter(book => book.author.toLowerCase() === author.toLowerCase());
-      if (booksByAuthor.length > 0) {
-        resolve(booksByAuthor);
-      } else {
-        reject('No books found by this author');
-      }
-    },3000)});
-  }
-
-function getBooksByTitle(title) {
-    return new Promise((resolve, reject) => {
-    setTimeout(() =>{
-      const booksByTitle = Object.values(books).filter(book => book.title.toLowerCase() === title.toLowerCase());
-      if (booksByTitle.length > 0) {
-        resolve(booksByTitle);
-      } else {
-        reject('No books found with this title');
-      }
-    },3000)});
-  }
-  
-
 public_users.post("/register", (req,res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -68,6 +21,16 @@ public_users.post("/register", (req,res) => {
   return res.status(201).json({ message: "User registered successfully" });
 });
 
+function getBooks() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() =>{
+      if(books) {
+        resolve(books);
+      } else {
+        reject('Failed to fetch books');
+      }
+    },3000)});
+}
 
 public_users.get('/', async function (req, res) {
     try {
@@ -80,6 +43,16 @@ public_users.get('/', async function (req, res) {
 });
 
 
+function getBookByISBN(isbn) {
+    return new Promise((resolve, reject) => {
+    setTimeout(() =>{
+      if (books[isbn]) {
+        resolve(books[isbn]);
+      } else {
+        reject('Book not found');
+      }
+    },3000)});
+}
 
  public_users.get('/isbn/:isbn', async function (req, res) {
     const isbn = req.params.isbn;
@@ -92,7 +65,18 @@ public_users.get('/', async function (req, res) {
     }
   });
 
-  
+ function getBooksByAuthor(author) {
+    return new Promise((resolve, reject) => {
+    setTimeout(() =>{
+      const booksByAuthor = Object.values(books).filter(book => book.author.toLowerCase() === author.toLowerCase());
+      if (booksByAuthor.length > 0) {
+        resolve(booksByAuthor);
+      } else {
+        reject('No books found by this author');
+      }
+    },3000)});
+  }
+
 // Get book details based on author
 public_users.get('/author/:author', async function (req, res) {
     const author = req.params.author;
@@ -104,6 +88,18 @@ public_users.get('/author/:author', async function (req, res) {
       res.status(404).json({ message: error });
     }
   });
+
+function getBooksByTitle(title) {
+    return new Promise((resolve, reject) => {
+    setTimeout(() =>{
+      const booksByTitle = Object.values(books).filter(book => book.title.toLowerCase() === title.toLowerCase());
+      if (booksByTitle.length > 0) {
+        resolve(booksByTitle);
+      } else {
+        reject('No books found with this title');
+      }
+    },3000)});
+}
 
 // Get all books based on title
 public_users.get('/title/:title', async function (req, res) {

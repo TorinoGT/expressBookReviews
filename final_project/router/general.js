@@ -18,34 +18,37 @@ function getBooks() {
 
 function getBookByISBN(isbn) {
     return new Promise((resolve, reject) => {
+    setTimeout(() =>{
       if (books[isbn]) {
         resolve(books[isbn]);
       } else {
         reject('Book not found');
       }
-    });
+    },3000)});
 }
 
 function getBooksByAuthor(author) {
     return new Promise((resolve, reject) => {
+    setTimeout(() =>{
       const booksByAuthor = Object.values(books).filter(book => book.author.toLowerCase() === author.toLowerCase());
       if (booksByAuthor.length > 0) {
         resolve(booksByAuthor);
       } else {
         reject('No books found by this author');
       }
-    });
+    },3000)});
   }
 
 function getBooksByTitle(title) {
     return new Promise((resolve, reject) => {
+    setTimeout(() =>{
       const booksByTitle = Object.values(books).filter(book => book.title.toLowerCase() === title.toLowerCase());
       if (booksByTitle.length > 0) {
         resolve(booksByTitle);
       } else {
         reject('No books found with this title');
       }
-    });
+    },3000)});
   }
   
 
@@ -66,24 +69,6 @@ public_users.post("/register", (req,res) => {
   return res.status(201).json({ message: "User registered successfully" });
 });
 
-// Get the book list available in the shop
-/*public_users.get('/',function (req, res) {
-  //Write your code here
-  res.send(JSON.stringify(books,null,4));
-});*/
-
-/*public_users.get('/', function (req, res) {
-    
-    getBooks()
-    .then(books => {
-      res.send(JSON.stringify(books, null, 4));
-    })
-    .catch(error => {
-      console.error('Error fetching books:', error);
-      res.status(500).json({ message: 'Failed to fetch books' });
-    });
-
-  });*/
 
 public_users.get('/', async function (req, res) {
     try {
@@ -95,18 +80,7 @@ public_users.get('/', async function (req, res) {
     }
 });
 
-// Get book details based on ISBN
-/*public_users.get('/isbn/:isbn',function (req, res) {
-  const isbn = req.params.isbn;
 
-  if (books[isbn]) {
-    res.send(books[isbn]);
-  } else {
-    res.status(404).json({ message: "Book not found" });
-  }
-
-  
- });*/
 
  public_users.get('/isbn/:isbn', async function (req, res) {
     const isbn = req.params.isbn;
